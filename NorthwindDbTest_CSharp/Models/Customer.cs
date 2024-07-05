@@ -1,12 +1,11 @@
 ﻿using Newtonsoft.Json;
-using System;
 
 namespace NorthwindDbTest_CSharp.Models
 {
-    [Serializable]
-    public class Supplier
+    public class Customer
     {
-        public int Id { get; set; }
+        [JsonConverter(typeof(NullableStringConverter))]
+        public string Id { get; set; }
         [JsonConverter(typeof(NullableStringConverter))]
         public string CompanyName { get; set; }
         [JsonConverter(typeof(NullableStringConverter))]

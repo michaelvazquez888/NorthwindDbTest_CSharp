@@ -8,7 +8,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title><%: Page.Title %> - <%=ConfigurationManager.AppSettings["AppName"] %></title>
 
-    <webopt:bundlereference runat="server" path="~/Content/css" />
+    <webopt:BundleReference runat="server" Path="~/Content/css" />
     <link href="~/favicon.ico" rel="shortcut icon" type="image/x-icon" />
 
 </head>
@@ -58,14 +58,14 @@
         </div>
     </form>
 </body>
-    <script>
-        $(function () {
-            $(".navbar .nav-link").each(function (index, element) {
-                if (element.href === window.location.href) {
-                    $(".navbar").find(".active").removeClass("active");
-                    $(element).addClass("active");
-                }
-            });
-        })
-    </script>
+<script>
+    $(function () {
+        $(".navbar .nav-link").each(function (index, element) {
+            if (element.href === window.location.href) {
+                $(".navbar").find(".active").removeClass("active");
+                $(element).addClass("active");
+            }
+        });
+    })
+</script>
 </html>

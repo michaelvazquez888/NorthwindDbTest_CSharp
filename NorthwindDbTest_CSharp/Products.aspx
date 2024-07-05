@@ -1,4 +1,5 @@
 ﻿<%@ Page Title="Products" Language="C#" MasterPageFile="~/Site.Master" AutoEventWireup="true" CodeBehind="Products.aspx.cs" Inherits="NorthwindDbTest_CSharp.Products" %>
+
 <asp:Content ID="BodyContent" ContentPlaceHolderID="MainContent" runat="server">
     <div class="container">
         <nav aria-label="breadcrumb">
@@ -14,16 +15,18 @@
                     <div class="col-12 mt-2">
                         <div class="d-flex">
                             <div class="me-sm-auto py-2">
-                                <span class="small"><asp:Literal ID="lblRecordCount" runat="server"></asp:Literal></span>
+                                <span class="small">
+                                    <asp:Literal ID="lblRecordCount" runat="server"></asp:Literal>
+                                </span>
                             </div>
                             <div class="d-flex flex-wrap justify-content-end" style="grid-column-gap: 1rem;">
                                 <div class="form-check mr-3 align-self-center">
-                                    <asp:CheckBox ID="chkAvailableOnly" runat="server" Checked="false" Text="Show only available products" />
+                                    <asp:CheckBox ID="chkAvailableOnly" runat="server" Checked="false" Text="Show only available products" OnCheckedChanged="chkAvailableOnly_CheckedChanged" AutoPostBack="true" />
                                 </div>
                                 <div>
                                     <div class="input-group">
                                         <asp:TextBox ID="txtSearch" runat="server" CssClass="form-control" placeholder="Search by product name..."></asp:TextBox>
-                                        <asp:LinkButton ID="btnSearch" runat="server" CssClass="btn btn-secondary">
+                                        <asp:LinkButton ID="btnSearch" runat="server" CssClass="btn btn-secondary" OnClick="btnSearch_Click">
                                             <i class="bi bi-search"></i>
                                         </asp:LinkButton>
                                     </div>
@@ -33,16 +36,20 @@
                     </div>
                     <div class="col-12 mt-2">
                         <div class="table-responsive">
-                            <asp:GridView ID="gvProducts" runat="server" 
-                                AutoGenerateColumns="false" 
-                                Width="100%" 
+                            <asp:GridView ID="gvProducts" runat="server"
+                                AutoGenerateColumns="false"
+                                Width="100%"
                                 CellPadding="3"
                                 CssClass="table table-sm table-striped table-light"
-                                EmptyDataText = "No products available."
-                                OnPreRender="gvProducts_PreRender" 
+                                EmptyDataText="No products available."
+                                OnPreRender="gvProducts_PreRender"
                                 OnDataBound="gvProducts_DataBound">
                                 <Columns>
-                                    <asp:BoundField DataField="Name" HeaderText="Name" />
+                                    <asp:TemplateField HeaderText="Name">
+                                        <ItemTemplate>
+                                            <asp:HyperLink runat="server" NavigateUrl='<%# "~/ProductDetails.aspx?ProductId=" + Eval("Id") %>' Target="_blank" Text='<%# Eval("Name") %>'></asp:HyperLink>
+                                        </ItemTemplate>
+                                    </asp:TemplateField>
                                     <asp:BoundField DataField="QuantityPerUnit" HeaderText="Qty Per Unit" />
                                     <asp:TemplateField HeaderText="Unit Price">
                                         <ItemTemplate>

@@ -22,7 +22,7 @@ namespace NorthwindDbTest_CSharp
         /// <summary>
         /// Load all Products into the grid.
         /// </summary>
-        private void LoadProducts()
+        private void LoadProducts(bool availableOnly = false, string searchText = null)
         {
             using (ProductsRepository productRepo = new ProductsRepository())
             {
@@ -31,6 +31,17 @@ namespace NorthwindDbTest_CSharp
 
                 if (products != null)
                 {
+                    if (products.Any() && availableOnly)
+                    {
+                        products = products.Where(p => !p.Discontinued);
+                    }
+
+                    if (products.Any() && !string.IsNullOrEmpty(searchText))
+                    {
+                        // Using IndexOf to make the search case insensitive.
+                        products = products.Where(p => p.Name.IndexOf(searchText, StringComparison.OrdinalIgnoreCase) >= 0);
+                    }
+
                     gvProducts.DataSource = productViewModelService.CreateViewModel(products).OrderBy(x => x.Name);
                     gvProducts.DataBind();
                 }
@@ -61,6 +72,16 @@ namespace NorthwindDbTest_CSharp
             GridView gv = (GridView)sender;
 
             lblRecordCount.Text = $"Showing 1 to {gv.Rows.Count} of {gv.Rows.Count} entries";
+        }
+
+        protected void chkAvailableOnly_CheckedChanged(object sender, EventArgs e)
+        {
+            LoadProducts(chkAvailableOnly.Checked, txtSearch.Text);
+        }
+
+        protected void btnSearch_Click(object sender, EventArgs e)
+        {
+            LoadProducts(chkAvailableOnly.Checked, txtSearch.Text);
         }
     }
 }
